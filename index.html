@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐄 An Important Question</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Tap-to-start overlay: unlocks audio on first user gesture -->
+    <div id="tap-overlay">
+        <div id="tap-inner">🐄<br>tap anywhere to begin</div>
+    </div>
+
+    <div id="curtain"></div>
+
+    <div id="world">
+        <div id="world-bg"></div>
+        <canvas id="atmosphere-canvas"></canvas>
+    </div>
+
+    <div id="cow-wrap">
+        <svg id="cow-svg" viewBox="0 0 280 320" width="280" height="320" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+            <defs>
+                <radialGradient id="gBody" cx="42%" cy="36%" r="60%">
+                    <stop offset="0%" stop-color="#fefcf6"/>
+                    <stop offset="55%" stop-color="#f4efe2"/>
+                    <stop offset="100%" stop-color="#ddd5c0"/>
+                </radialGradient>
+                <radialGradient id="gPatch" cx="38%" cy="35%" r="62%">
+                    <stop offset="0%" stop-color="#2c2420"/>
+                    <stop offset="100%" stop-color="#1a1410"/>
+                </radialGradient>
+                <radialGradient id="gSnout" cx="44%" cy="36%" r="56%">
+                    <stop offset="0%" stop-color="#f4b8a0"/>
+                    <stop offset="60%" stop-color="#e0967a"/>
+                    <stop offset="100%" stop-color="#cc7a60"/>
+                </radialGradient>
+                <radialGradient id="gEye" cx="32%" cy="28%" r="68%">
+                    <stop offset="0%" stop-color="#ffffff"/>
+                    <stop offset="100%" stop-color="#ece8e0"/>
+                </radialGradient>
+                <radialGradient id="gPupil" cx="28%" cy="24%" r="72%">
+                    <stop offset="0%" stop-color="#5a3a20"/>
+                    <stop offset="45%" stop-color="#2c1808"/>
+                    <stop offset="100%" stop-color="#120800"/>
+                </radialGradient>
+                <radialGradient id="gHorn" cx="28%" cy="18%" r="72%">
+                    <stop offset="0%" stop-color="#dfc070"/>
+                    <stop offset="100%" stop-color="#a07830"/>
+                </radialGradient>
+                <radialGradient id="gUdder" cx="45%" cy="38%" r="55%">
+                    <stop offset="0%" stop-color="#ffccd8"/>
+                    <stop offset="100%" stop-color="#f0a0b8"/>
+                </radialGradient>
+                <filter id="shadow" x="-15%" y="-15%" width="130%" height="130%">
+                    <feDropShadow dx="2" dy="5" stdDeviation="7" flood-color="rgba(0,0,0,0.28)"/>
+                </filter>
+            </defs>
+
+            <ellipse cx="140" cy="314" rx="105" ry="12" fill="rgba(0,0,0,0.2)" filter="url(#shadow)"/>
+
+            <g id="cow-tail" style="transform-origin: 118px 195px;">
+                <path d="M 118 195 Q 158 175 155 150 Q 152 128 170 118" stroke="#ccc0a0" stroke-width="6" fill="none" stroke-linecap="round"/>
+                <ellipse cx="172" cy="114" rx="10" ry="13" fill="url(#gPatch)" transform="rotate(-10,172,114)"/>
+                <path d="M166 106 Q170 98 176 96" stroke="#1a1410" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M170 104 Q175 95 182 97" stroke="#1a1410" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </g>
+
+            <g id="cow-body" filter="url(#shadow)">
+                <ellipse cx="135" cy="222" rx="108" ry="80" fill="url(#gBody)"/>
+                <ellipse cx="115" cy="210" rx="58" ry="46" fill="url(#gPatch)" opacity="0.92" transform="rotate(-8,115,210)"/>
+                <ellipse cx="188" cy="245" rx="38" ry="28" fill="url(#gPatch)" opacity="0.78" transform="rotate(10,188,245)"/>
+                <ellipse cx="115" cy="186" rx="44" ry="26" fill="rgba(255,255,248,0.22)" transform="rotate(-22,115,186)"/>
+            </g>
+
+            <g id="cow-udder">
+                <ellipse cx="136" cy="296" rx="38" ry="20" fill="url(#gUdder)"/>
+                <circle cx="124" cy="308" r="5" fill="#e08898"/>
+                <circle cx="136" cy="310" r="5" fill="#e08898"/>
+                <circle cx="148" cy="308" r="5" fill="#e08898"/>
+            </g>
+
+            <g id="legs">
+                <g class="leg-fl" style="transform-origin: 100px 285px;">
+                    <rect x="88" y="284" width="24" height="56" rx="10" fill="#f0ece0"/>
+                    <rect x="88" y="284" width="24" height="56" rx="10" fill="none" stroke="rgba(0,0,0,0.06)" stroke-width="1.5"/>
+                    <ellipse cx="100" cy="342" rx="14" ry="8" fill="#2a2218"/>
+                </g>
+                <g class="leg-fr" style="transform-origin: 170px 285px;">
+                    <rect x="158" y="284" width="24" height="56" rx="10" fill="#f0ece0"/>
+                    <ellipse cx="170" cy="342" rx="14" ry="8" fill="#2a2218"/>
+                </g>
+                <g class="leg-bl" style="transform-origin: 82px 268px;">
+                    <rect x="70" y="268" width="22" height="52" rx="9" fill="#e8e0cc"/>
+                    <ellipse cx="81" cy="322" rx="13" ry="7" fill="#2a2218"/>
+                </g>
+                <g class="leg-br" style="transform-origin: 192px 268px;">
+                    <rect x="181" y="268" width="22" height="52" rx="9" fill="#e8e0cc"/>
+                    <ellipse cx="192" cy="322" rx="13" ry="7" fill="#2a2218"/>
+                </g>
+            </g>
+
+            <ellipse cx="138" cy="158" rx="34" ry="26" fill="url(#gBody)"/>
+
+            <g id="cow-head" style="transform-origin: 138px 95px; transition: transform 0.5s ease;">
+                <ellipse cx="138" cy="95" rx="82" ry="76" fill="url(#gBody)" filter="url(#shadow)"/>
+                <ellipse cx="114" cy="62" rx="40" ry="26" fill="rgba(255,255,248,0.22)" transform="rotate(-28,114,62)"/>
+                <ellipse cx="128" cy="72" rx="50" ry="42" fill="url(#gPatch)" opacity="0.88" transform="rotate(-5,128,72)"/>
+                <ellipse cx="195" cy="85" rx="24" ry="30" fill="url(#gPatch)" opacity="0.70" transform="rotate(15,195,85)"/>
+
+                <g id="ear-left" style="transform-origin: 70px 85px; transition: transform 0.4s ease;">
+                    <ellipse cx="52" cy="80" rx="22" ry="16" fill="#f0e8d4" transform="rotate(-30,52,80)" filter="url(#shadow)"/>
+                    <ellipse cx="52" cy="80" rx="13" ry="10" fill="url(#gUdder)" transform="rotate(-30,52,80)"/>
+                </g>
+                <g id="ear-right" style="transform-origin: 206px 85px; transition: transform 0.4s ease;">
+                    <ellipse cx="224" cy="80" rx="22" ry="16" fill="#f0e8d4" transform="rotate(30,224,80)" filter="url(#shadow)"/>
+                    <ellipse cx="224" cy="80" rx="13" ry="10" fill="url(#gUdder)" transform="rotate(30,224,80)"/>
+                </g>
+
+                <g id="horns">
+                    <path d="M 88 38 Q 72 12 82 6" stroke="url(#gHorn)" stroke-width="10" fill="none" stroke-linecap="round" filter="url(#shadow)"/>
+                    <path d="M 188 38 Q 204 12 194 6" stroke="url(#gHorn)" stroke-width="10" fill="none" stroke-linecap="round" filter="url(#shadow)"/>
+                </g>
+
+                <g id="brows">
+                    <path id="brow-left" d="M 88 55 Q 107 46 124 52" stroke="#2a1808" stroke-width="4.5" fill="none" stroke-linecap="round" style="transform-origin: 106px 50px; transition: all 0.45s cubic-bezier(0.34,1.56,0.64,1);"/>
+                    <path id="brow-right" d="M 152 52 Q 169 46 188 55" stroke="#2a1808" stroke-width="4.5" fill="none" stroke-linecap="round" style="transform-origin: 170px 50px; transition: all 0.45s cubic-bezier(0.34,1.56,0.64,1);"/>
+                </g>
+
+                <g id="eye-left" transform="translate(108,95)" style="transform-origin: 108px 95px;">
+                    <ellipse rx="20" ry="20" fill="url(#gEye)" style="transition: all 0.4s ease;"/>
+                    <ellipse id="iris-l" rx="13" ry="13" cy="1" fill="#7a5030" style="transition: all 0.4s ease;"/>
+                    <ellipse id="pupil-l" rx="8.5" ry="8.5" cy="1.5" fill="url(#gPupil)" style="transition: all 0.4s ease;"/>
+                    <ellipse cx="-5" cy="-5" rx="4.5" ry="3.5" fill="rgba(255,255,255,0.95)" transform="rotate(-20)"/>
+                    <ellipse cx="4" cy="-8" rx="2" ry="1.8" fill="rgba(255,255,255,0.6)"/>
+                    <ellipse id="lid-left" rx="21" ry="11" cy="-10" fill="#e8dcc8" opacity="0" style="transition: all 0.4s ease; transform-origin: 0px -10px;"/>
+                </g>
+                <g id="eye-right" transform="translate(168,95)" style="transform-origin: 168px 95px;">
+                    <ellipse rx="20" ry="20" fill="url(#gEye)" style="transition: all 0.4s ease;"/>
+                    <ellipse id="iris-r" rx="13" ry="13" cy="1" fill="#7a5030" style="transition: all 0.4s ease;"/>
+                    <ellipse id="pupil-r" rx="8.5" ry="8.5" cy="1.5" fill="url(#gPupil)" style="transition: all 0.4s ease;"/>
+                    <ellipse cx="-5" cy="-5" rx="4.5" ry="3.5" fill="rgba(255,255,255,0.95)" transform="rotate(-20)"/>
+                    <ellipse cx="4" cy="-8" rx="2" ry="1.8" fill="rgba(255,255,255,0.6)"/>
+                    <ellipse id="lid-right" rx="21" ry="11" cy="-10" fill="#e8dcc8" opacity="0" style="transition: all 0.4s ease; transform-origin: 0px -10px;"/>
+                </g>
+
+                <g id="cheeks">
+                    <ellipse class="blush" cx="74" cy="112" rx="18" ry="11" fill="#ff9898" opacity="0" style="transition: opacity 0.5s ease;"/>
+                    <ellipse class="blush" cx="202" cy="112" rx="18" ry="11" fill="#ff9898" opacity="0" style="transition: opacity 0.5s ease;"/>
+                </g>
+
+                <g id="snout">
+                    <ellipse cx="138" cy="140" rx="46" ry="32" fill="url(#gSnout)" filter="url(#shadow)"/>
+                    <ellipse cx="122" cy="130" rx="18" ry="11" fill="rgba(255,255,248,0.22)" transform="rotate(-18,122,130)"/>
+                    <ellipse cx="122" cy="143" rx="9" ry="7" fill="#b06848" transform="rotate(-8,122,143)"/>
+                    <ellipse cx="154" cy="143" rx="9" ry="7" fill="#b06848" transform="rotate(8,154,143)"/>
+                    <ellipse cx="122" cy="144" rx="5.5" ry="4.5" fill="#884030" transform="rotate(-8,122,144)"/>
+                    <ellipse cx="154" cy="144" rx="5.5" ry="4.5" fill="#884030" transform="rotate(8,154,144)"/>
+                </g>
+
+                <g id="mouth-group" style="transform-origin: 138px 168px; transition: transform 0.4s ease;">
+                    <path id="mouth-curve" d="M 118 163 Q 138 174 158 163" stroke="#b06040" stroke-width="3" fill="none" stroke-linecap="round" style="transition: d 0.4s ease;"/>
+                </g>
+
+                <g id="cowbell" style="transform-origin: 138px 166px; transition: transform 0.5s ease;">
+                    <rect x="124" y="166" width="28" height="22" rx="4" fill="#d4a830" stroke="#a87820" stroke-width="1.5"/>
+                    <ellipse cx="138" cy="190" rx="7" ry="4.5" fill="#a87820"/>
+                    <line x1="124" y1="173" x2="152" y2="173" stroke="#a87820" stroke-width="1"/>
+                </g>
+            </g>
+        </svg>
+    </div>
+
+    <div id="sign-rig">
+        <div id="sign-ropes">
+            <div class="sign-rope"></div>
+            <div class="sign-rope"></div>
+        </div>
+        <div id="wooden-sign">
+            <div id="question-text">The sky is blue, this cow's name is Dora,<br>I'm just doing my best to match your aura. ✨<br><br>Since neither of us has a private jet ready to fly...<br><br>Let's hop on a video call and just say hi? ☕</div>
+            <div class="sign-btns">
+                <button id="btn-yes">YES! 🎉</button>
+                <button id="btn-no">No...</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="finale">
+        <canvas id="finale-canvas"></canvas>
+        <div id="finale-msg">Moo-yeah! 🎉<br><span>Jet canceled, wifi connected.<br>Can't wait! ❤️</span></div>
+    </div>
+
+    <div id="gif-overlay">
+        <img id="cow-gif" src="assets/cow-dance.gif" alt="Let's Boogie!"/>
+    </div>
+
+    <div id="tracker">
+        <h4>📊 Her Response</h4>
+        <div class="tr"><span>Yes clicks:</span><span class="tv tg" id="t-yes">0</span></div>
+        <div class="tr"><span>No clicks:</span><span class="tv tp" id="t-no">0</span></div>
+        <div style="margin-top:6px;font-size:12px;color:#aaa" id="t-final">Final: waiting...</div>
+        <div style="margin-top:8px;font-size:10px;color:rgba(255,255,255,.3)">Ctrl+Shift+T to toggle</div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
