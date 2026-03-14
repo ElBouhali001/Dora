@@ -27,7 +27,7 @@ let isSad        = false;
 let finaleActive = false;
 
 // ── AUDIO ASSETS ──
-const soundWalk  = new Audio('assets/cow-1.m4a');
+const soundWalk  = new Audio('assets/Cow-1.m4a');
 const soundSad   = new Audio('assets/sad.mp3');
 const soundTsk   = new Audio('assets/tsk.m4a');
 const soundHappy = new Audio('assets/happy.mp3');
